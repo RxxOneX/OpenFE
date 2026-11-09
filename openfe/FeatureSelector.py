@@ -13,7 +13,7 @@ from sklearn.model_selection import train_test_split, StratifiedKFold, KFold
 from .FeatureGenerator import *
 from concurrent.futures import ProcessPoolExecutor
 from sklearn.feature_selection import mutual_info_regression, mutual_info_classif
-from sklearn.metrics import mean_squared_error, log_loss, roc_auc_score
+from sklearn.metrics import root_mean_squared_error, log_loss, roc_auc_score
 import scipy.special
 from datetime import datetime
 import warnings
@@ -55,7 +55,7 @@ class ForwardFeatureSelector:
             Minimum improvement in performance required to add a new feature to the selected_features list.
 
         metric: str, optional (default=None)
-            Scikit-learn scoring metric to use. Must be a valid scorer from sklearn.metrics.SCORERS.
+            Scikit-learn scoring metric to use. Must be a valid scorer name from sklearn.metrics.get_scorer_names().
             If not provided, the metric will be determined based on the task type.
 
         task: str, optional (default=None)
@@ -230,7 +230,7 @@ class ForwardFeatureSelector:
                 self.metric = 'r2'
             self.my_print(f"The metric is automatically determined as {self.metric}.")
         else:
-            assert self.metric in sklearn.metrics.SCORERS.keys()
+            assert self.metric in sklearn.metrics.get_scorer_names()
 
     def get_estimator(self):
         if self.estimator is None:
@@ -562,7 +562,7 @@ class TwoStageFeatureSelector:
             init_metric = log_loss(label, scipy.special.softmax(pred, axis=1),
                                    labels=list(range(pred.shape[1])))
         elif self.metric == 'rmse':
-            init_metric = mean_squared_error(label, pred, squared=False)
+            init_metric = root_mean_squared_error(label, pred)
         elif self.metric == 'auc':
             init_metric = roc_auc_score(label, scipy.special.expit(pred))
         else:

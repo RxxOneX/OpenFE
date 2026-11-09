@@ -1,11 +1,11 @@
 from setuptools import setup, find_packages
 
-with open("README.md", "r") as fh:
+with open("README.md", "r", encoding="utf-8") as fh:
   long_description = fh.read()
 
 setup(
   name="openfe",
-  version="0.0.8",
+  version="0.0.12+rxxonex.1",
   author="Tianping Zhang",
   author_email="ztp18@mails.tsinghua.edu.cn",
   description="OpenFE: automated feature generation beyond expert-level performance",
@@ -15,7 +15,7 @@ setup(
   install_requires=[
       "numpy>=1.19.3",
       "pandas>=1.1.5",
-      "scikit_learn>=0.24.2",
+      "scikit_learn>=1.4",
       "lightgbm>=3.3.2",
       # "xgboost>=1.5.2",
       "scipy>=1.5.4",
